@@ -9,12 +9,16 @@ package za.co.sindi.oauth.client.oauth2;
  * @see <a href="https://datatracker.ietf.org/doc/html/rfc6749#section-5.2">Section 5.2 of RFC 6749</a>.
  */
 public enum Error {
-	INVALID_REQUEST("invalid_request")
+	ACCESS_DENIED("access_denied")
+	,INVALID_REQUEST("invalid_request")
 	,INVALID_CLIENT("invalid_client")
 	,INVALID_GRANT("invalid_grant")
 	,UNAUTHORIZED_CLIENT("unauthorized_client")
 	,UNSUPPORTED_GRANT_TYPE("unsupported_grant_type")
+	,UNSUPPORTED_RESPONSE_TYPE("unsupported_response_type")
 	,INVALID_SCOPE("invalid_scope")
+	,SERVER_ERROR("server_error")
+	,TEMPORARILY_UNAVAILABLE("temporarily_unavailable")
 	;
 	private final String code;
 

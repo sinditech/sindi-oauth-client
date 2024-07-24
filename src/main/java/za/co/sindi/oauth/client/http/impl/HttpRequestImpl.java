@@ -33,6 +33,15 @@ public class HttpRequestImpl implements HttpRequest {
 	public HttpRequestImpl(HttpMethod method, URL url) {
 		this(method, url, new HttpHeadersImpl(), null);
 	}
+	
+	/**
+	 * @param method
+	 * @param url
+	 * @param requestHeaders
+	 */
+	public HttpRequestImpl(HttpMethod method, URL url, HttpHeadersImpl requestHeaders) {
+		this(method, url, requestHeaders, null);
+	}
 
 	/**
 	 * @param method

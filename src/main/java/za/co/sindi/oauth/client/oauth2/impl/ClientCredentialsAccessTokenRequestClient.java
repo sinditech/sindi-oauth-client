@@ -1,7 +1,7 @@
 /**
  * 
  */
-package za.co.sindi.oauth.client.oauth2.client;
+package za.co.sindi.oauth.client.oauth2.impl;
 
 import java.util.Map;
 

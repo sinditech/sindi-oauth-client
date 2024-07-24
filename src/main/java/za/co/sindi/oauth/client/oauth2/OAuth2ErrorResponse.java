@@ -22,6 +22,25 @@ public class OAuth2ErrorResponse implements Serializable {
 	
 	@JsonbProperty("error_uri")
 	private String errorUri;
+	
+	@JsonbProperty
+	private String state;
+
+	/**
+	 * 
+	 */
+	public OAuth2ErrorResponse() {
+		super();
+		//TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @param error
+	 */
+	public OAuth2ErrorResponse(Error error) {
+		super();
+		this.error = error;
+	}
 
 	/**
 	 * @return the error
@@ -71,6 +90,18 @@ public class OAuth2ErrorResponse implements Serializable {
 	public void setErrorUri(String errorUri) {
 		this.errorUri = errorUri;
 	}
-	
-	
+
+	/**
+	 * @return the state
+	 */
+	public String getState() {
+		return state;
+	}
+
+	/**
+	 * @param state the state to set
+	 */
+	public void setState(String state) {
+		this.state = state;
+	}
 }

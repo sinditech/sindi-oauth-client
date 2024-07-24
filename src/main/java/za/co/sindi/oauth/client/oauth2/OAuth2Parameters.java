@@ -22,6 +22,9 @@ public enum OAuth2Parameters {
 	,USERNAME("username")
 	,PASSWORD("password")
 	,REFRESH_TOKEN("refresh_token")
+	,ERROR("error")
+	,ERROR_DESCRIPTION("error_description")
+	,ERROR_URI("error_uri")
 	;
 	private final String name;
 

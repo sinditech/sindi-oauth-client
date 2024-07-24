@@ -5,6 +5,7 @@ package za.co.sindi.oauth.client.http.impl;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient.Redirect;
 import java.net.http.HttpRequest.BodyPublishers;
@@ -23,6 +24,7 @@ import za.co.sindi.commons.net.http.BasicAuthenticator;
 import za.co.sindi.commons.utils.Strings;
 import za.co.sindi.oauth.client.http.HttpClient;
 import za.co.sindi.oauth.client.http.HttpHeaderName;
+import za.co.sindi.oauth.client.http.HttpMethod;
 import za.co.sindi.oauth.client.http.HttpRequest;
 import za.co.sindi.oauth.client.http.HttpResponse;
 
@@ -41,7 +43,7 @@ public class HttpClientImpl implements HttpClient {
 		try {
 			java.net.http.HttpRequest jdkHttpRequest = toJdkHttpRequest(request);
 			java.net.http.HttpClient jdkHttpClient = httpClientBuilder.followRedirects(Redirect.ALWAYS).build();
-			return toInternalHttpResponse(jdkHttpClient.send(jdkHttpRequest, BodyHandlers.ofString()), request);
+			return toInternalHttpResponse(jdkHttpClient.send(jdkHttpRequest, BodyHandlers.ofString()));
 		} catch (URISyntaxException | InterruptedException e) {
 			throw new UncheckedException(e);
 		} catch (IOException e) {
@@ -62,7 +64,7 @@ public class HttpClientImpl implements HttpClient {
 		try {
 			java.net.http.HttpRequest jdkHttpRequest = toJdkHttpRequest(request);
 			java.net.http.HttpClient jdkHttpClient = httpClientBuilder.followRedirects(Redirect.ALWAYS).build();
-			return jdkHttpClient.sendAsync(jdkHttpRequest, BodyHandlers.ofString()).thenApplyAsync(httpResponse -> toInternalHttpResponse(httpResponse, request)).toCompletableFuture();
+			return jdkHttpClient.sendAsync(jdkHttpRequest, BodyHandlers.ofString()).thenApplyAsync(httpResponse -> toInternalHttpResponse(httpResponse)).toCompletableFuture();
 		} catch (URISyntaxException e) {
 			throw new UncheckedException(e);
 		}
@@ -85,7 +87,26 @@ public class HttpClientImpl implements HttpClient {
 		return httpRequestBuilder.build();
 	}
 	
-	private HttpResponse toInternalHttpResponse(final java.net.http.HttpResponse<String> httpResponse, final HttpRequest request) {
+	private HttpRequest toInternalHttpRequest(final java.net.http.HttpRequest httpRequest) {
+		
+		//Get headers
+		HttpHeadersImpl requestHeaders = new HttpHeadersImpl();
+		for(Entry<String, List<String>> headers: httpRequest.headers().map().entrySet()) {
+			String headerName = headers.getKey();
+			List<String> values = headers.getValue();
+			if (values.size() == 1) requestHeaders.setHeader(headerName, values.get(0));
+			else values.stream().forEach(value -> requestHeaders.addHeader(headerName, value));
+		}
+		
+		try {
+			return new HttpRequestImpl(HttpMethod.valueOf(httpRequest.method()), httpRequest.uri().toURL(), requestHeaders);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			throw new UncheckedException(e);
+		}
+	}
+	
+	private HttpResponse toInternalHttpResponse(final java.net.http.HttpResponse<String> httpResponse) {
 		
 		//Get headers
 		HttpHeadersImpl responseHeaders = new HttpHeadersImpl();
@@ -112,6 +133,6 @@ public class HttpClientImpl implements HttpClient {
 			}
 		}
 		
-		return new HttpResponseImpl(httpResponse.statusCode(), request, responseHeaders, new StringBodyContent(contentType, httpResponse.body(), charset));
+		return new HttpResponseImpl(httpResponse.statusCode(), toInternalHttpRequest(httpResponse.request()), responseHeaders, new StringBodyContent(contentType, httpResponse.body(), charset));
 	}
 }
