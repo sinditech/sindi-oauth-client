@@ -9,6 +9,7 @@ import java.util.Map;
 import za.co.sindi.commons.io.UncheckedException;
 import za.co.sindi.commons.net.URIBuilder;
 import za.co.sindi.oauth.client.http.HttpResponse;
+import za.co.sindi.oauth.client.oauth2.AccessTokenResponse;
 import za.co.sindi.oauth.client.oauth2.AuthorizationRequestClient;
 import za.co.sindi.oauth.client.oauth2.OAuth2Parameters;
 

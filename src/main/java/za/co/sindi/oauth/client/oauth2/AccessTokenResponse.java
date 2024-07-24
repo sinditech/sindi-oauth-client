@@ -25,8 +25,11 @@ public class AccessTokenResponse implements Serializable {
 	@JsonbProperty("refresh_token")
 	private String refreshToken;
 	
-	@JsonbProperty("scope")
+	@JsonbProperty
 	private String scope;
+	
+	@JsonbProperty
+	private String state;
 	
 	/**
 	 * 
@@ -114,5 +117,19 @@ public class AccessTokenResponse implements Serializable {
 	 */
 	public void setScope(String scope) {
 		this.scope = scope;
+	}
+
+	/**
+	 * @return the state
+	 */
+	public String getState() {
+		return state;
+	}
+
+	/**
+	 * @param state the state to set
+	 */
+	public void setState(String state) {
+		this.state = state;
 	}
 }
