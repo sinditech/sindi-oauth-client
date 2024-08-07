@@ -53,7 +53,6 @@ public class AuthorizationRequest extends TokenRequest {
 	
 	public static class Builder extends TokenRequest.Builder<AuthorizationRequest> {
 		
-//		protected URI uri;
 		protected ResponseType responseType;
 		protected String clientId;
 		protected String redirectUri;
@@ -65,9 +64,8 @@ public class AuthorizationRequest extends TokenRequest {
 		 * @param grantType
 		 * @param clientId
 		 */
-		protected Builder(String uri, ResponseType responseType, String clientId) {
+		public Builder(String uri, ResponseType responseType, String clientId) {
 			super(uri);
-//			this.uri = URI.create(Objects.requireNonNull(uri, "OAuth 2 request URI is required."));
 			this.responseType = Objects.requireNonNull(responseType, "'response_type' is required.");
 			this.clientId = Objects.requireNonNull(clientId, "'client_id' is required.");
 		}

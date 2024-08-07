@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import za.co.sindi.commons.io.UncheckedException;
 import za.co.sindi.commons.net.URIBuilder;
@@ -55,49 +56,49 @@ public abstract class AuthorizationRequestClient<RES> extends AbstractOAuth2Requ
 	@Override
 	protected RES handleHttpResponse(HttpResponse httpResponse) {
 		// TODO Auto-generated method stub
-		int code = httpResponse.getStatusCode() / 100;
-		if (code == 4 || code == 5) {
-			OAuth2ErrorResponse errorResponse = getOAuth2ErrorResponse(httpResponse);
-			throw new OAuth2ClientException(httpResponse.getStatusCode(), errorResponse);
-		}
-		
-		return createResponse(httpResponse);
-	}
-	
-	private OAuth2ErrorResponse getOAuth2ErrorResponse(HttpResponse httpResponse) {
 		try {
 			URIBuilder uriBuilder = new URIBuilder(httpResponse.getRequest().getURL().toURI());
-			Map<String, String> fragments = splitFragment(uriBuilder.getFragment());
-			OAuth2ErrorResponse errorResponse = new OAuth2ErrorResponse(Error.of(fragments.get(OAuth2Parameters.ERROR.toString())));
-			
-			if (fragments.containsKey(OAuth2Parameters.ERROR_DESCRIPTION.toString())) {
-				errorResponse.setErrorDescription(fragments.get(OAuth2Parameters.ERROR_DESCRIPTION.toString()));
+			String parameterString = Objects.requireNonNullElse(uriBuilder.getFragment(), uriBuilder.getQuery());
+			Map<String, String> parameters = splitParameter(parameterString);
+			if (parameters.containsKey(OAuth2Parameters.ERROR.toString())) {
+				OAuth2ErrorResponse errorResponse = getOAuth2ErrorResponse(parameters);
+				throw new OAuth2ClientException(httpResponse.getStatusCode(), errorResponse);
 			}
 			
-			if (fragments.containsKey(OAuth2Parameters.ERROR_URI.toString())) {
-				errorResponse.setErrorUri(fragments.get(OAuth2Parameters.ERROR_URI.toString()));
-			}
-			
-			if (fragments.containsKey(OAuth2Parameters.STATE.toString())) {
-				errorResponse.setState(fragments.get(OAuth2Parameters.STATE.toString()));
-			}
-			
-			return errorResponse;
+			return createResponse(parameters);
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			throw new UncheckedException(e);
 		}
 	}
 	
-	protected static Map<String, String> splitFragment(String fragment) {
-	    Map<String, String> fragment_pairs = new LinkedHashMap<String, String>();
-	    String[] pairs = fragment.split("&");
-	    for (String pair : pairs) {
-	        int idx = pair.indexOf("=");
-	        fragment_pairs.put(pair.substring(0, idx), pair.substring(idx + 1));
-	    }
-	    return fragment_pairs;
+	private OAuth2ErrorResponse getOAuth2ErrorResponse(final Map<String, String> parameters) {
+		OAuth2ErrorResponse errorResponse = new OAuth2ErrorResponse(Error.of(parameters.get(OAuth2Parameters.ERROR.toString())));
+		
+		if (parameters.containsKey(OAuth2Parameters.ERROR_DESCRIPTION.toString())) {
+			errorResponse.setErrorDescription(parameters.get(OAuth2Parameters.ERROR_DESCRIPTION.toString()));
+		}
+		
+		if (parameters.containsKey(OAuth2Parameters.ERROR_URI.toString())) {
+			errorResponse.setErrorUri(parameters.get(OAuth2Parameters.ERROR_URI.toString()));
+		}
+		
+		if (parameters.containsKey(OAuth2Parameters.STATE.toString())) {
+			errorResponse.setState(parameters.get(OAuth2Parameters.STATE.toString()));
+		}
+		
+		return errorResponse;
 	}
 	
-	protected abstract RES createResponse(HttpResponse httpResponse);
+	private static Map<String, String> splitParameter(String parameterString) {
+	    Map<String, String> parameter_pairs = new LinkedHashMap<String, String>();
+	    String[] pairs = parameterString.split("&");
+	    for (String pair : pairs) {
+	        int idx = pair.indexOf("=");
+	        parameter_pairs.put(pair.substring(0, idx), pair.substring(idx + 1));
+	    }
+	    return parameter_pairs;
+	}
+	
+	protected abstract RES createResponse(final Map<String, String> parameters);
 }

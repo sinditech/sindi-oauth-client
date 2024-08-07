@@ -42,27 +42,20 @@ public class AuthorizationCodeAccessTokenRequest extends AccessTokenRequest {
 		return builder.redirectUri;
 	}
 	
-//	public String getClientId() {
-//		return builder.clientId;
-//	}
-	
 	public static class Builder extends AccessTokenRequest.Builder<AuthorizationCodeAccessTokenRequest> {
 		
 		private String code;
 		private String redirectUri;
-//		private String clientId;
 
 		/**
 		 * @param uri
 		 * @param code
 		 * @param redirectUri
-		 * @param clientId
 		 */
-		public Builder(final String uri, final String code, final String redirectUri /*, final String clientId*/) {
+		public Builder(final String uri, final String code, final String redirectUri) {
 			super(uri, GrantType.AUTHORIZATION_CODE);
 			this.code = Objects.requireNonNull(code, "'code' is REQUIRED.");
 			this.redirectUri = Objects.requireNonNull(redirectUri, "'redirect_uri' is REQUIRED.");
-//			this.clientId = Objects.requireNonNull(clientId, "'client_id' is REQUIRED.");
 		}
 
 		@Override
