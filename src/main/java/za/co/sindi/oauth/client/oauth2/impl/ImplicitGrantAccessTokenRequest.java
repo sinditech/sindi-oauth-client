@@ -13,9 +13,8 @@ import za.co.sindi.oauth.client.oauth2.OAuth2Parameters;
  * @author Buhake Sindi
  * @since 03 February 2024
  */
-public class AuthorizationTokenAuthorizationRequestClient extends AuthorizationRequestClient<AccessTokenResponse> {
+public class ImplicitGrantAccessTokenRequest extends AuthorizationRequestClient<AccessTokenResponse> {
 
-	
 	/* (non-Javadoc)
 	 * @see za.co.sindi.oauth.client.oauth2.AuthorizationRequestClient#createResponse(java.util.Map)
 	 */

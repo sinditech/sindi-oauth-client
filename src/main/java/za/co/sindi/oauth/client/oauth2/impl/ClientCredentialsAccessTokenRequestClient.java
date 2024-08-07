@@ -7,6 +7,7 @@ import java.util.Map;
 
 import za.co.sindi.oauth.client.oauth2.AccessTokenRequestClient;
 import za.co.sindi.oauth.client.oauth2.ClientCredentialsAccessTokenRequest;
+import za.co.sindi.oauth.client.oauth2.OAuth2Parameters;
 
 /**
  * @author Buhake Sindi
@@ -20,6 +21,8 @@ public class ClientCredentialsAccessTokenRequestClient extends AccessTokenReques
 	@Override
 	protected void handleHttpRequest(ClientCredentialsAccessTokenRequest request, Map<String, Object> queryParameterMap) {
 		// TODO Auto-generated method stub
-		
+		if (queryParameterMap.containsKey(OAuth2Parameters.SCOPE.toString())) {
+			queryParameterMap.put(OAuth2Parameters.SCOPE.toString(), request.getScope());
+		}
 	}
 }
