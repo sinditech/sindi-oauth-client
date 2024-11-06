@@ -5,6 +5,7 @@ package za.co.sindi.oauth.client.oauth2;
 
 import za.co.sindi.oauth.client.AsyncClient;
 import za.co.sindi.oauth.client.Client;
+import za.co.sindi.oauth.client.JSONTransformer;
 import za.co.sindi.oauth.client.http.HttpClient;
 
 /**
@@ -13,7 +14,7 @@ import za.co.sindi.oauth.client.http.HttpClient;
  */
 public interface OAuth2RequestClient<REQ extends TokenRequest, RES> extends Client<REQ, RES>, AsyncClient<REQ, RES> {
 
-//	public void setClientAuthentication(final ClientAuthentication clientAuthentication);
+	public void setClientAuthentication(final ClientAuthentication clientAuthentication);
 	public void setHttpClient(final HttpClient httpClient);
-//	public void setJSONTransformer(final JSONTransformer transformer);
+	public void setJSONTransformer(final JSONTransformer transformer);
 }

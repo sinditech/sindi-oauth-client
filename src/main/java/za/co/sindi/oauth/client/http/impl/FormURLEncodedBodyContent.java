@@ -24,7 +24,6 @@ public class FormURLEncodedBodyContent extends StringBodyContent {
 	}
 
 	/**
-	 * @param contentType
 	 * @param content
 	 * @param charset
 	 */

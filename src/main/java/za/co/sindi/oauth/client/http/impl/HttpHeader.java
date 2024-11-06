@@ -21,7 +21,7 @@ public class HttpHeader implements Header {
 	
 	/**
 	 * @param name
-	 * @param values
+	 * @param value
 	 */
 	public HttpHeader(final String name, final String value) {
 		super();

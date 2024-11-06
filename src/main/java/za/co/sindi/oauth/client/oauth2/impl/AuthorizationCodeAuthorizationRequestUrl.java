@@ -5,7 +5,7 @@ package za.co.sindi.oauth.client.oauth2.impl;
 
 import java.util.Map;
 
-import za.co.sindi.oauth.client.oauth2.AuthorizationRequestClient;
+import za.co.sindi.oauth.client.oauth2.AuthorizationRequestUrl;
 import za.co.sindi.oauth.client.oauth2.AuthorizationResponse;
 import za.co.sindi.oauth.client.oauth2.OAuth2Parameters;
 
@@ -13,7 +13,7 @@ import za.co.sindi.oauth.client.oauth2.OAuth2Parameters;
  * @author Buhake Sindi
  * @since 03 February 2024
  */
-public class AuthorizationCodeAuthorizationRequestClient extends AuthorizationRequestClient<AuthorizationResponse> {
+public class AuthorizationCodeAuthorizationRequestUrl extends AuthorizationRequestUrl<AuthorizationResponse> {
 
 	/* (non-Javadoc)
 	 * @see za.co.sindi.oauth.client.oauth2.AuthorizationRequestClient#createResponse(java.util.Map)

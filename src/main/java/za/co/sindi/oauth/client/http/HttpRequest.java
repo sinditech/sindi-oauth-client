@@ -3,7 +3,7 @@
  */
 package za.co.sindi.oauth.client.http;
 
-import java.net.URL;
+import java.net.URI;
 import java.nio.ByteBuffer;
 
 /**
@@ -14,7 +14,7 @@ public interface HttpRequest {
 
 	public HttpMethod getMethod();
 	
-	public URL getURL();
+	public URI getURI();
 	
 	public void addHeader(final HttpHeaderName name, final String value);
 	

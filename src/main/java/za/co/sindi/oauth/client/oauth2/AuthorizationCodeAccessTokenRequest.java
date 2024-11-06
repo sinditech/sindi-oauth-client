@@ -6,6 +6,8 @@ package za.co.sindi.oauth.client.oauth2;
 import java.net.URI;
 import java.util.Objects;
 
+import za.co.sindi.oauth.client.oauth2.AuthorizationRequest.Builder;
+
 /**
  * @author Buhake Sindi
  * @since 03 February 2024
@@ -42,10 +44,20 @@ public class AuthorizationCodeAccessTokenRequest extends AccessTokenRequest {
 		return builder.redirectUri;
 	}
 	
+	public String getState() {
+		return builder.state;
+	}
+	
+	public PKCE getPkce() {
+		return builder.pkce;
+	}
+	
 	public static class Builder extends AccessTokenRequest.Builder<AuthorizationCodeAccessTokenRequest> {
 		
 		private String code;
 		private String redirectUri;
+		private String state;
+		protected PKCE pkce;
 
 		/**
 		 * @param uri
@@ -56,6 +68,22 @@ public class AuthorizationCodeAccessTokenRequest extends AccessTokenRequest {
 			super(uri, GrantType.AUTHORIZATION_CODE);
 			this.code = Objects.requireNonNull(code, "'code' is REQUIRED.");
 			this.redirectUri = Objects.requireNonNull(redirectUri, "'redirect_uri' is REQUIRED.");
+		}
+		
+		/**
+		 * @param state the state to set
+		 */
+		public Builder setState(String state) {
+			this.state = state;
+			return this;
+		}
+		
+		/**
+		 * @param pkce the pkce to set
+		 */
+		public Builder setPkce(PKCE pkce) {
+			this.pkce = pkce;
+			return this;
 		}
 
 		@Override

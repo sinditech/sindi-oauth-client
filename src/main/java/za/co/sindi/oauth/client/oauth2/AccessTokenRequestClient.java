@@ -3,15 +3,12 @@
  */
 package za.co.sindi.oauth.client.oauth2;
 
-import java.io.UncheckedIOException;
-import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import za.co.sindi.commons.utils.Preconditions;
 import za.co.sindi.oauth.client.JSONTransformer;
-import za.co.sindi.oauth.client.JSONTransformerImpl;
 import za.co.sindi.oauth.client.http.HttpClient;
 import za.co.sindi.oauth.client.http.HttpMethod;
 import za.co.sindi.oauth.client.http.HttpRequest;
@@ -25,13 +22,13 @@ import za.co.sindi.oauth.client.http.impl.HttpRequestImpl;
  */
 public abstract class AccessTokenRequestClient<REQ extends AccessTokenRequest> extends AbstractOAuth2RequestClient<REQ, AccessTokenResponse> {
 	
-	protected ClientAuthentication clientAuthentication;
-	protected JSONTransformer jsonTransformer;
+//	protected ClientAuthentication clientAuthentication;
+//	protected JSONTransformer jsonTransformer;
 	
 	/**
 	 */
 	protected AccessTokenRequestClient() {
-		this(null, new JSONTransformerImpl());
+		super();
 	}
 	
 	/**
@@ -45,29 +42,38 @@ public abstract class AccessTokenRequestClient<REQ extends AccessTokenRequest> e
 	}
 	
 	/**
-	 * @param httpClient
 	 * @param clientAuthentication
-	 * @param jsonTransformer
+	 * @param httpClient
 	 */
-	protected AccessTokenRequestClient(HttpClient httpClient, ClientAuthentication clientAuthentication, JSONTransformer jsonTransformer) {
+	protected AccessTokenRequestClient(ClientAuthentication clientAuthentication, HttpClient httpClient) {
 		super(httpClient);
 		this.clientAuthentication = clientAuthentication;
-		this.jsonTransformer = jsonTransformer;
 	}
-
+	
 	/**
-	 * @param clientAuthentication the clientAuthentication to set
+	 * @param clientAuthentication
+	 * @param httpClient
+	 * @param jsonTransformer
 	 */
-	public void setClientAuthentication(ClientAuthentication clientAuthentication) {
+	protected AccessTokenRequestClient(ClientAuthentication clientAuthentication, HttpClient httpClient, JSONTransformer jsonTransformer) {
+		super(httpClient, jsonTransformer);
 		this.clientAuthentication = clientAuthentication;
+//		this.jsonTransformer = jsonTransformer;
 	}
 
-	/**
-	 * @param jsonTransformer the jsonTransformer to set
-	 */
-	public void setJsonTransformer(JSONTransformer jsonTransformer) {
-		this.jsonTransformer = jsonTransformer;
-	}
+//	/**
+//	 * @param clientAuthentication the clientAuthentication to set
+//	 */
+//	public void setClientAuthentication(ClientAuthentication clientAuthentication) {
+//		this.clientAuthentication = clientAuthentication;
+//	}
+//
+//	/**
+//	 * @param jsonTransformer the jsonTransformer to set
+//	 */
+//	public void setJSONTransformer(JSONTransformer jsonTransformer) {
+//		this.jsonTransformer = jsonTransformer;
+//	}
 
 	@Override
 	public HttpRequest createHttpRequest(REQ request) {
@@ -86,21 +92,16 @@ public abstract class AccessTokenRequestClient<REQ extends AccessTokenRequest> e
 			httpClient.authenticate(clientAuthentication.getClientId(), clientAuthentication.getClientSecret());
 		}
 		
-		try {
-			HttpRequest httpRequest = new HttpRequestImpl(HttpMethod.POST, request.getURI().toURL());
-			httpRequest.setBody(new FormURLEncodedBodyContent(queryParameterMap, StandardCharsets.UTF_8));
-			return httpRequest;
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			throw new UncheckedIOException(e);
-		}
+		HttpRequest httpRequest = new HttpRequestImpl(HttpMethod.POST, request.getURI());
+		httpRequest.setBody(new FormURLEncodedBodyContent(queryParameterMap, StandardCharsets.UTF_8));
+		return httpRequest;
 	}
 	
 	/* (non-Javadoc)
-	 * @see za.co.sindi.oauth.client.oauth2.AbstractOAuth2RequestClient#handleHttpResponse(za.co.sindi.oauth.client.http.HttpResponse)
+	 * @see za.co.sindi.oauth.client.oauth2.AbstractOAuth2RequestClient#createResponse(za.co.sindi.oauth.client.http.HttpResponse)
 	 */
 	@Override
-	protected AccessTokenResponse handleHttpResponse(HttpResponse httpResponse) {
+	protected AccessTokenResponse createResponse(HttpResponse httpResponse) {
 		// TODO Auto-generated method stub
 		int code = httpResponse.getStatusCode() / 100;
 		if (code == 4 || code == 5) {

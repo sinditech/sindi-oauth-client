@@ -3,7 +3,7 @@
  */
 package za.co.sindi.oauth.client.http.impl;
 
-import java.net.URL;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 
@@ -20,39 +20,37 @@ import za.co.sindi.oauth.client.http.HttpRequest;
 public class HttpRequestImpl implements HttpRequest {
 	
 	private HttpMethod method;
-	private URL url;
+	private URI uri;
 	private HttpHeadersImpl requestHeaders;
 	private BodyContent content;
 	
 	/**
 	 * @param method
-	 * @param url
-	 * @param requestHeaders
-	 * @param content
+	 * @param uri
 	 */
-	public HttpRequestImpl(HttpMethod method, URL url) {
-		this(method, url, new HttpHeadersImpl(), null);
+	public HttpRequestImpl(HttpMethod method, URI uri) {
+		this(method, uri, new HttpHeadersImpl(), null);
 	}
 	
 	/**
 	 * @param method
-	 * @param url
+	 * @param uri
 	 * @param requestHeaders
 	 */
-	public HttpRequestImpl(HttpMethod method, URL url, HttpHeadersImpl requestHeaders) {
-		this(method, url, requestHeaders, null);
+	public HttpRequestImpl(HttpMethod method, URI uri, HttpHeadersImpl requestHeaders) {
+		this(method, uri, requestHeaders, null);
 	}
 
 	/**
 	 * @param method
-	 * @param url
+	 * @param uri
 	 * @param requestHeaders
 	 * @param content
 	 */
-	public HttpRequestImpl(HttpMethod method, URL url, HttpHeadersImpl requestHeaders, BodyContent content) {
+	public HttpRequestImpl(HttpMethod method, URI uri, HttpHeadersImpl requestHeaders, BodyContent content) {
 		super();
 		this.method = Objects.requireNonNull(method, "HTTP request method is required.");
-		this.url = Objects.requireNonNull(url, "HTTP request URL is required.");
+		this.uri = Objects.requireNonNull(uri, "HTTP request URI is required.");
 		this.requestHeaders = Objects.requireNonNull(requestHeaders, "HTTP request headers is required.");
 		this.content = content;
 	}
@@ -64,9 +62,9 @@ public class HttpRequestImpl implements HttpRequest {
 	}
 
 	@Override
-	public URL getURL() {
+	public URI getURI() {
 		// TODO Auto-generated method stub
-		return url;
+		return uri;
 	}
 
 	@Override

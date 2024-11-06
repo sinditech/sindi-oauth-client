@@ -51,6 +51,10 @@ public class AuthorizationRequest extends TokenRequest {
 		return builder.state;
 	}
 	
+	public PKCE getPkce() {
+		return builder.pkce;
+	}
+	
 	public static class Builder extends TokenRequest.Builder<AuthorizationRequest> {
 		
 		protected ResponseType responseType;
@@ -58,10 +62,11 @@ public class AuthorizationRequest extends TokenRequest {
 		protected String redirectUri;
 		protected String scope;
 		protected String state;
+		protected PKCE pkce;
 		
 		/**
 		 * @param uri
-		 * @param grantType
+		 * @param responseType
 		 * @param clientId
 		 */
 		public Builder(String uri, ResponseType responseType, String clientId) {
@@ -93,11 +98,18 @@ public class AuthorizationRequest extends TokenRequest {
 			this.state = state;
 			return this;
 		}
+		
+		/**
+		 * @param pkce the pkce to set
+		 */
+		public Builder setPkce(PKCE pkce) {
+			this.pkce = pkce;
+			return this;
+		}
 
 		/* (non-Javadoc)
 		 * @see za.co.sindi.oauth.client.oauth2.TokenRequest.Builder#build()
 		 */
-		
 		@Override
 		public AuthorizationRequest build() {
 			// TODO Auto-generated method stub

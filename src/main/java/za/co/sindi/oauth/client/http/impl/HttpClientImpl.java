@@ -5,7 +5,6 @@ package za.co.sindi.oauth.client.http.impl;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient.Redirect;
 import java.net.http.HttpRequest.BodyPublishers;
@@ -71,7 +70,7 @@ public class HttpClientImpl implements HttpClient {
 	}
 	
 	private java.net.http.HttpRequest toJdkHttpRequest(final HttpRequest request) throws URISyntaxException {
-		java.net.http.HttpRequest.Builder httpRequestBuilder = java.net.http.HttpRequest.newBuilder(request.getURL().toURI());
+		java.net.http.HttpRequest.Builder httpRequestBuilder = java.net.http.HttpRequest.newBuilder(request.getURI());
 		
 		//Put Header
 		for(Entry<String, List<String>> headers: request.getHeaders().getHeaders().entrySet()) {
@@ -98,12 +97,7 @@ public class HttpClientImpl implements HttpClient {
 			else values.stream().forEach(value -> requestHeaders.addHeader(headerName, value));
 		}
 		
-		try {
-			return new HttpRequestImpl(HttpMethod.valueOf(httpRequest.method()), httpRequest.uri().toURL(), requestHeaders);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			throw new UncheckedException(e);
-		}
+		return new HttpRequestImpl(HttpMethod.valueOf(httpRequest.method()), httpRequest.uri(), requestHeaders);
 	}
 	
 	private HttpResponse toInternalHttpResponse(final java.net.http.HttpResponse<String> httpResponse) {
