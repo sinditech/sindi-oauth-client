@@ -6,8 +6,6 @@ package za.co.sindi.oauth.client.oauth2;
 import java.net.URI;
 import java.util.Objects;
 
-import za.co.sindi.oauth.client.oauth2.AuthorizationRequest.Builder;
-
 /**
  * @author Buhake Sindi
  * @since 03 February 2024
