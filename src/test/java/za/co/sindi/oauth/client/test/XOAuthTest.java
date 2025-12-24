@@ -26,26 +26,26 @@ public class XOAuthTest {
 	public static void main(String[] args) {
 		
 		PKCE pcke = new PKCE();
-		za.co.sindi.oauth.client.oauth2.AuthorizationRequest.Builder builder = new za.co.sindi.oauth.client.oauth2.AuthorizationRequest.Builder("https://twitter.com/i/oauth2/authorize", ResponseType.CODE, "YOUR CLIENT ID HERE")
+		za.co.sindi.oauth.client.oauth2.AuthorizationRequest.Builder builder = new za.co.sindi.oauth.client.oauth2.AuthorizationRequest.Builder("https://twitter.com/i/oauth2/authorize", ResponseType.CODE, "a")
 				.setRedirectUri("https://www.oauth.com/playground/authorization-code.html")
 				.setScope("tweet.read%20users.read%20follows.read%20follows.write")
-				.setState("PqGzynaZ42SVZwYU")
+				.setState("b")
 				.setPkce(pcke);
 		AuthorizationRequest authorizationRequest = builder.build();
 		AuthorizationCodeAuthorizationRequestUrl authorizationUrl = new AuthorizationCodeAuthorizationRequestUrl();
 		String url = authorizationUrl.generateUrl(authorizationRequest);
 		System.out.println(url);
 		
-		AuthorizationResponse response = authorizationUrl.createResponse("https://www.oauth.com/playground/authorization-code.html?state=PqGzynaZ42SVZwYU&code=eTc2NDIyMGtuOU9wam8xMmhfTElpbGlKbVV2WWl2OWY4aC02TnViV051VmlsOjE3Mjk3NDE4MDc3ODU6MToxOmFjOjE");
+		AuthorizationResponse response = authorizationUrl.createResponse("https://www.oauth.com/playground/authorization-code.html?state=b&code=c");
 		System.out.println(response.getCode());
 		System.out.println(response.getState());
 		
 		za.co.sindi.oauth.client.oauth2.AuthorizationCodeAccessTokenRequest.Builder builder2 = new za.co.sindi.oauth.client.oauth2.AuthorizationCodeAccessTokenRequest.Builder("https://api.x.com/2/oauth2/token", response.getCode(), "https://www.oauth.com/playground/authorization-code.html")
-				.setState("PqGzynaZ42SVZwYU")
+				.setState("b")
 				.setPkce(pcke);
 		AuthorizationCodeAccessTokenRequest accessTokenRequest = builder2.build();
 		AuthorizationCodeAccessTokenRequestClient accessTokenRequestClient = new AuthorizationCodeAccessTokenRequestClient();
-		accessTokenRequestClient.setClientAuthentication(new BasicClientAuthentication("YOUR CLIENT KEY HERE", "YOUR CLIENT SECRET HERE"));
+		accessTokenRequestClient.setClientAuthentication(new BasicClientAuthentication("d", "e"));
 		AccessTokenResponse accessToken = accessTokenRequestClient.send(accessTokenRequest);
 		System.out.println(accessToken.getAccessToken());
 	}

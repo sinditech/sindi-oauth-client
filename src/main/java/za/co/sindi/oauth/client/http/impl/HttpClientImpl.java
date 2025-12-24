@@ -63,7 +63,7 @@ public class HttpClientImpl implements HttpClient {
 		try {
 			java.net.http.HttpRequest jdkHttpRequest = toJdkHttpRequest(request);
 			java.net.http.HttpClient jdkHttpClient = httpClientBuilder.followRedirects(Redirect.ALWAYS).build();
-			return jdkHttpClient.sendAsync(jdkHttpRequest, BodyHandlers.ofString()).thenApplyAsync(httpResponse -> toInternalHttpResponse(httpResponse)).toCompletableFuture();
+			return jdkHttpClient.sendAsync(jdkHttpRequest, BodyHandlers.ofString()).thenApplyAsync(httpResponse -> toInternalHttpResponse(httpResponse));
 		} catch (URISyntaxException e) {
 			throw new UncheckedException(e);
 		}

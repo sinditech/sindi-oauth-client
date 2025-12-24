@@ -81,7 +81,7 @@ public abstract class AbstractOAuth2RequestClient<REQ extends TokenRequest, RES>
 		// TODO Auto-generated method stub
 		HttpRequest httpRequest = handleRequest(request);
 		CompletableFuture<HttpResponse> httpResponseFuture = httpClient.sendAsync(httpRequest);
-		return httpResponseFuture.thenApply(httpResponse -> handleHttpResponse(httpResponse)).toCompletableFuture();
+		return httpResponseFuture.thenApply(httpResponse -> handleHttpResponse(httpResponse));
 	}
 	
 	private HttpRequest handleRequest(REQ request) {
